@@ -85,6 +85,7 @@ class HP_Attribution_Core {
 		$options = get_option( 'hp_attribution_settings' );
 		$cookie_days = isset( $options['cookie_days'] ) ? $options['cookie_days'] : 90;
 		$enable_consent = isset( $options['enable_consent_banner'] ) ? $options['enable_consent_banner'] : 0;
+		$require_consent = isset( $options['require_consent'] ) ? $options['require_consent'] : 0;
 
 		// Attribution Script
 		wp_enqueue_script(
@@ -98,6 +99,7 @@ class HP_Attribution_Core {
 		wp_localize_script( 'hp-attribution-js', 'hpAttributionConfig', array(
 			'cookieName' => 'hp_attribution',
 			'cookieDays' => $cookie_days,
+			'requireConsent' => $require_consent,
 			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 		));
 

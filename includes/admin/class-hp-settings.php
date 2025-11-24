@@ -62,6 +62,15 @@ class HP_Attribution_Admin {
 			'hp_consent_section',
 			array( 'label_for' => 'enable_consent_banner' )
 		);
+
+		add_settings_field(
+			'require_consent',
+			'Require Consent for Tracking',
+			array( $this, 'render_checkbox_field' ),
+			'hp-attribution',
+			'hp_consent_section',
+			array( 'label_for' => 'require_consent' )
+		);
 	}
 
 	public function render_settings_page() {

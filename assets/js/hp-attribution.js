@@ -3,8 +3,11 @@
 
     const CONFIG = window.hpAttributionConfig || {
         cookieName: 'hp_attribution',
-        cookieDays: 90
+        cookieDays: 90,
+        requireConsent: false
     };
+
+    const CONSENT_COOKIE = 'hp_consent';
 
     class HPAttribution {
         constructor() {
@@ -16,6 +19,25 @@
         }
 
         init() {
+            if (CONFIG.requireConsent == '1') { // PHP sends string '1' or '0' usually, but let's be safe
+                const consent = this.getConsent();
+                if (consent && consent.marketing) {
+                    this.runAttribution();
+                } else {
+                    console.log('HP Attribution: Waiting for consent...');
+                    window.addEventListener('hp_consent_updated', (e) => {
+                        if (e.detail.marketing) {
+                            console.log('HP Attribution: Consent granted, running...');
+                            this.runAttribution();
+                        }
+                    });
+                }
+            } else {
+                this.runAttribution();
+            }
+        }
+
+        runAttribution() {
             const currentParams = this.getURLParams();
             const referrer = document.referrer;
 
@@ -141,6 +163,18 @@
         isInternalReferrer(referrer) {
             if (!referrer) return false;
             return referrer.indexOf(window.location.hostname) !== -1;
+        }
+
+        getConsent() {
+            const cookie = this.getCookie(CONSENT_COOKIE);
+            if (cookie) {
+                try {
+                    return JSON.parse(cookie);
+                } catch (e) {
+                    return null;
+                }
+            }
+            return null;
         }
 
         getStoredData() {
