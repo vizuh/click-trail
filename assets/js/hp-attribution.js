@@ -147,6 +147,51 @@
                     });
                 });
             }
+
+            // PII Scanner
+            this.scanDataLayerForPII();
+        }
+
+        scanDataLayerForPII() {
+            // Simple check for common PII keys in dataLayer
+            if (!window.dataLayer) return;
+
+            const piiKeys = ['email', 'phone', 'firstname', 'lastname', 'first_name', 'last_name', 'customerEmail', 'customer_email'];
+            let piiFound = false;
+
+            // Helper to recursively search object
+            const searchObj = (obj) => {
+                for (let key in obj) {
+                    if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        searchObj(obj[key]);
+                    } else if (piiKeys.includes(key.toLowerCase())) {
+                        // Check if value looks like PII (basic check)
+                        if (obj[key] && obj[key].toString().length > 2) {
+                            piiFound = true;
+                        }
+                    }
+                }
+            };
+
+            window.dataLayer.forEach(item => {
+                searchObj(item);
+            });
+
+            if (piiFound) {
+                console.warn('HP Attribution: PII detected in Data Layer. Sending alert.');
+                // Send AJAX to log risk
+                // We use fetch for simplicity, assuming modern browser or polyfill
+                if (CONFIG.ajaxUrl) {
+                    const formData = new FormData();
+                    formData.append('action', 'hp_log_pii_risk');
+                    formData.append('pii_found', 'true');
+
+                    fetch(CONFIG.ajaxUrl, {
+                        method: 'POST',
+                        body: formData
+                    }).catch(e => console.error('HP Attribution: Error logging PII risk', e));
+                }
+            }
         }
 
         getURLParams() {

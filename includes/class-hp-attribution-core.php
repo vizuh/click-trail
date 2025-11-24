@@ -58,6 +58,10 @@ class HP_Attribution_Core {
 	private function define_admin_hooks() {
 		$plugin_settings = new HP_Attribution_Admin();
 		$plugin_settings->init();
+
+		// AJAX for PII Logging
+		add_action( 'wp_ajax_hp_log_pii_risk', array( $plugin_settings, 'ajax_log_pii_risk' ) );
+		add_action( 'wp_ajax_nopriv_hp_log_pii_risk', array( $plugin_settings, 'ajax_log_pii_risk' ) );
 	}
 
 	/**

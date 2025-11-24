@@ -7,6 +7,7 @@ class HP_Attribution_Admin {
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_notices', array( $this, 'display_pii_warning' ) );
 	}
 
 	public function add_admin_menu() {
@@ -103,6 +104,29 @@ class HP_Attribution_Admin {
 		?>
 		<input type="number" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="<?php echo esc_attr( $this->option_name . '[' . $args['label_for'] . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		<?php
+	}
+
+	public function ajax_log_pii_risk() {
+		// Security check? For MVP, maybe just check if it's a valid request. 
+		// Ideally we check nonce, but for a public facing pixel firing this, nonces are tricky with caching.
+		// We will trust the signal for now but sanitize.
+		
+		if ( isset( $_POST['pii_found'] ) && $_POST['pii_found'] === 'true' ) {
+			update_option( 'hp_pii_risk_detected', true );
+			wp_send_json_success();
+		}
+		wp_send_json_error();
+	}
+
+	public function display_pii_warning() {
+		if ( get_option( 'hp_pii_risk_detected' ) ) {
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p><strong><?php _e( 'DataBridge Audit detected PII risk on your Thank You page. Your tracking may be deactivated by Google.', 'hp-attribution' ); ?></strong></p>
+				<p><a href="#" class="button button-primary"><?php _e( 'Fix PII Issues Now', 'hp-attribution' ); ?></a></p>
+			</div>
+			<?php
+		}
 	}
 
 }
