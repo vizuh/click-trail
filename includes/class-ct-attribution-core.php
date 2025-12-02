@@ -41,11 +41,11 @@ class ClickTrail_Core {
 	 */
 	private function load_dependencies() {
 		// Admin
-                require_once CLICKTRAIL_DIR . 'includes/admin/class-ct-settings.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/admin/class-ct-settings.php';
 
                 // Integrations
-                require_once CLICKTRAIL_DIR . 'includes/integrations/class-ct-form-integrations.php';
-                require_once CLICKTRAIL_DIR . 'includes/integrations/class-ct-woocommerce.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/integrations/class-ct-form-integrations.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/integrations/class-ct-woocommerce.php';
 	}
 
 	/**
@@ -86,7 +86,7 @@ class ClickTrail_Core {
 	 * Enqueue the public-facing scripts and styles.
 	 */
         public function enqueue_scripts() {
-                $options = get_option( 'ct_attribution_settings', array() );
+                $options = get_option( 'funnelsheet_journey_settings', array() );
                 $enable_attribution = isset( $options['enable_attribution'] ) ? (bool) $options['enable_attribution'] : true;
                 $cookie_days = isset( $options['cookie_days'] ) ? absint( $options['cookie_days'] ) : 90;
                 $enable_consent = isset( $options['enable_consent_banner'] ) ? (bool) $options['enable_consent_banner'] : 1;
@@ -95,19 +95,19 @@ class ClickTrail_Core {
                 // Attribution Script
                 if ( $enable_attribution ) {
                         wp_enqueue_script(
-                                'clicktrail-attribution-js',
-                                CLICKTRAIL_URL . 'assets/js/clicktrail-attribution.js',
+                                'funnelsheet-journey-attribution-js',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/js/clicktrail-attribution.js',
                                 array(),
-                                CLICKTRAIL_VERSION,
+                                FUNNELSHEET_JOURNEY_VERSION,
                                 false // Load in Head
                         );
 
-                        wp_localize_script( 'clicktrail-attribution-js', 'clickTrailConfig', array(
+                        wp_localize_script( 'funnelsheet-journey-attribution-js', 'funnelsheetJourneyConfig', array(
                                 'cookieName' => 'attribution',
                                 'cookieDays' => $cookie_days,
                                 'requireConsent' => $require_consent,
                                 'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-                                'nonce'      => wp_create_nonce( CLICKTRAIL_PII_NONCE_ACTION ),
+                                'nonce'      => wp_create_nonce( FUNNELSHEET_JOURNEY_PII_NONCE_ACTION ),
                         ));
                 }
 
@@ -115,17 +115,17 @@ class ClickTrail_Core {
 		if ( $enable_consent ) {
 			wp_enqueue_style(
                                 'ct-consent-css',
-                                CLICKTRAIL_URL . 'assets/css/ct-consent.css',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/css/ct-consent.css',
 				array(),
-				CLICKTRAIL_VERSION,
+				FUNNELSHEET_JOURNEY_VERSION,
 				'all'
 			);
 
 			wp_enqueue_script(
                                 'ct-consent-js',
-                                CLICKTRAIL_URL . 'assets/js/ct-consent.js',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/js/ct-consent.js',
 				array(),
-				CLICKTRAIL_VERSION,
+				FUNNELSHEET_JOURNEY_VERSION,
 				true // Footer
 			);
 		}

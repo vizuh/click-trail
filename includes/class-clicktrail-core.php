@@ -42,11 +42,11 @@ class ClickTrail_Core {
 	 */
         private function load_dependencies() {
                 // Admin
-                require_once CLICKTRAIL_DIR . 'includes/admin/class-ct-settings.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/admin/class-ct-settings.php';
 
                 // Integrations
-                require_once CLICKTRAIL_DIR . 'includes/integrations/class-clicktrail-form-integrations.php';
-                require_once CLICKTRAIL_DIR . 'includes/integrations/class-clicktrail-woocommerce.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/integrations/class-clicktrail-form-integrations.php';
+                require_once FUNNELSHEET_JOURNEY_DIR . 'includes/integrations/class-clicktrail-woocommerce.php';
 	}
 
 	/**
@@ -67,7 +67,7 @@ class ClickTrail_Core {
 			),
 			'public' => false,
 			'show_ui' => true,
-			'show_in_menu' => 'clicktrail',
+                        'show_in_menu' => 'funnelsheet-journey-tracker',
 			'capability_type' => 'post',
 			'capabilities' => array(
 				'create_posts' => 'do_not_allow'
@@ -120,7 +120,7 @@ class ClickTrail_Core {
 	 * Enqueue the public-facing scripts and styles.
 	 */
         public function enqueue_scripts() {
-                $options = get_option( 'clicktrail_attribution_settings', array() );
+                $options = get_option( 'funnelsheet_journey_settings', array() );
                 $enable_attribution = isset( $options['enable_attribution'] ) ? (bool) $options['enable_attribution'] : true;
                 $cookie_days = isset( $options['cookie_days'] ) ? absint( $options['cookie_days'] ) : 90;
                 $enable_consent = isset( $options['enable_consent_banner'] ) ? (bool) $options['enable_consent_banner'] : 1;
@@ -129,19 +129,19 @@ class ClickTrail_Core {
                 // Attribution Script
                 if ( $enable_attribution ) {
                         wp_enqueue_script(
-                                'clicktrail-attribution-js',
-                                CLICKTRAIL_URL . 'assets/js/clicktrail-attribution.js',
+                                'funnelsheet-journey-attribution-js',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/js/clicktrail-attribution.js',
                                 array(),
-                                CLICKTRAIL_VERSION,
+                                FUNNELSHEET_JOURNEY_VERSION,
                                 false // Load in Head
                         );
 
-                        wp_localize_script( 'clicktrail-attribution-js', 'clickTrailConfig', array(
+                        wp_localize_script( 'funnelsheet-journey-attribution-js', 'funnelsheetJourneyConfig', array(
                                 'cookieName' => 'attribution',
                                 'cookieDays' => $cookie_days,
                                 'requireConsent' => $require_consent,
                                 'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-                                'nonce'      => wp_create_nonce( CLICKTRAIL_PII_NONCE_ACTION ),
+                                'nonce'      => wp_create_nonce( FUNNELSHEET_JOURNEY_PII_NONCE_ACTION ),
                                 'enableWhatsapp' => isset( $options['enable_whatsapp'] ) ? (bool) $options['enable_whatsapp'] : true,
                                 'whatsappAppendAttribution' => isset( $options['whatsapp_append_attribution'] ) ? (bool) $options['whatsapp_append_attribution'] : false,
                                 'whatsappLogClicks' => isset( $options['whatsapp_log_clicks'] ) ? (bool) $options['whatsapp_log_clicks'] : false
@@ -151,28 +151,28 @@ class ClickTrail_Core {
                 // Consent Script & Style
                 if ( $enable_consent ) {
                         wp_enqueue_style(
-                                'clicktrail-consent-css',
-                                CLICKTRAIL_URL . 'assets/css/clicktrail-consent.css',
+                                'funnelsheet-journey-consent-css',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/css/clicktrail-consent.css',
                                 array(),
-                                CLICKTRAIL_VERSION,
+                                FUNNELSHEET_JOURNEY_VERSION,
                                 'all'
                         );
 
-			wp_enqueue_script(
-                                'clicktrail-consent-js',
-                                CLICKTRAIL_URL . 'assets/js/clicktrail-consent.js',
+                        wp_enqueue_script(
+                                'funnelsheet-journey-consent-js',
+                                FUNNELSHEET_JOURNEY_URL . 'assets/js/clicktrail-consent.js',
                                 array(),
-                                CLICKTRAIL_VERSION,
+                                FUNNELSHEET_JOURNEY_VERSION,
                                 true // Footer
                         );
-		}
-	}
+                }
+        }
 
     /**
      * Inject Consent Mode defaults into the head.
      */
     public function inject_consent_defaults() {
-        $options = get_option( 'clicktrail_attribution_settings', array() );
+        $options = get_option( 'funnelsheet_journey_settings', array() );
         $enable_consent = isset( $options['enable_consent_banner'] ) ? (bool) $options['enable_consent_banner'] : true;
 
         if ( ! $enable_consent ) {

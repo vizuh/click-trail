@@ -1,1 +1,1 @@
-Placeholder for ClickTrail translation files (.po/.mo).
+Placeholder for Funnelsheet Journey Tracker translation files (.po/.mo).

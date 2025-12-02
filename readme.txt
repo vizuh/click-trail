@@ -1,4 +1,4 @@
-=== ClickTrail ===
+=== Funnelsheet Journey Tracker ===
 Contributors: hugoc
 Donate link: https://vizuh.com/
 Tags: analytics, attribution, utm, consent, woocommerce, whatsapp, tracking
@@ -13,9 +13,9 @@ Lead & Order Attribution for WordPress forms, WooCommerce and WhatsApp.
 
 == Description ==
 
-**What is ClickTrail?**
+**What is Funnelsheet Journey Tracker?**
 
-ClickTrail is a WordPress plugin that finally shows you which campaigns actually generate your leads and sales.
+Funnelsheet Journey Tracker is a WordPress plugin that finally shows you which campaigns actually generate your leads and sales.
 
 It captures first- and last-touch UTMs and click IDs, stores them in cookies, and automatically attaches that data to your form entries and WooCommerce orders. On top of that, it ships with a lightweight consent banner + Consent Mode defaults, so your tracking stays aligned with EU-style privacy rules.
 
@@ -24,12 +24,12 @@ Built for WordPress 5.0+ / PHP 7.0+, it includes a simple settings screen for ma
 **Key Benefits**
 
 *   **See the real source of every lead and order**: First-touch and last-touch UTMs + click IDs are persisted for up to 90 days and injected into supported forms and Woo orders automatically.
-*   **Make GA4 & Meta tracking actually useful**: ClickTrail pushes enriched, GA4-ready purchase events from WooCommerce thank-you pages, with campaign data and line items included.
+*   **Make GA4 & Meta tracking actually useful**: Funnelsheet Journey Tracker pushes enriched, GA4-ready purchase events from WooCommerce thank-you pages, with campaign data and line items included.
 *   **Stay privacy-aware without losing all signal**: A built-in consent banner and Consent Mode defaults let you block or allow tracking based on strict, relaxed, or geo-based rules.
 
 **Admin & Configuration**
 
-ClickTrail adds a “Attribution & Consent Settings” page under its own admin menu. From there, you can:
+Funnelsheet Journey Tracker adds a “Attribution & Consent Settings” page under its own admin menu. From there, you can:
 
 *   Turn attribution capture on/off.
 *   Set cookie duration.
@@ -39,11 +39,11 @@ ClickTrail adds a “Attribution & Consent Settings” page under its own admin 
     *   **Relaxed** – everything granted by default.
     *   **Geo-based custom** – deny for EU/UK/CH visitors, grant elsewhere.
 
-Settings are stored under a single `clicktrail_attribution_settings` option and rendered through native WordPress settings sections/fields. An AJAX endpoint logs PII risk alerts, and an admin notice surfaces PII warnings on the dashboard when needed.
+Settings are stored under a single `funnelsheet_journey_settings` option and rendered through native WordPress settings sections/fields. An AJAX endpoint logs PII risk alerts, and an admin notice surfaces PII warnings on the dashboard when needed.
 
 **Front-end Behavior**
 
-Based on your settings, ClickTrail:
+Based on your settings, Funnelsheet Journey Tracker:
 
 *   Enqueues attribution and consent scripts/styles.
 *   Localizes the attribution script with cookie name, duration, consent requirements, and nonce-secured AJAX URL.
@@ -69,20 +69,20 @@ Attribution data is read from cookies (`ct_attribution` / `attribution`), saniti
 
 == Installation ==
 
-1.  Upload the plugin files to the `/wp-content/plugins/clicktrail` directory, or install the plugin through the WordPress plugins screen directly.
+1.  Upload the plugin files to the `/wp-content/plugins/funnelsheet-journey-tracker` directory, or install the plugin through the WordPress plugins screen directly.
 2.  Activate the plugin through the 'Plugins' screen in WordPress.
-3.  Go to **ClickTrail** in the admin menu to configure attribution and consent settings.
+3.  Go to **Funnelsheet Journey Tracker** in the admin menu to configure attribution and consent settings.
 4.  For supported form plugins, submit a test entry to verify UTM values are captured.
 
 == Frequently Asked Questions ==
 
 = What data does the plugin store? =
 
-ClickTrail stores attribution data (UTMs, click IDs, landing page, and session count) in a cookie and passes the values into supported form submissions and WooCommerce orders.
+Funnelsheet Journey Tracker stores attribution data (UTMs, click IDs, landing page, and session count) in a cookie and passes the values into supported form submissions and WooCommerce orders.
 
 = Does the consent banner block tracking until approval? =
 
-If you enable "Require Consent for Tracking" in the settings, ClickTrail will defer storing attribution until the visitor accepts.
+If you enable "Require Consent for Tracking" in the settings, Funnelsheet Journey Tracker will defer storing attribution until the visitor accepts.
 
 = How does the WhatsApp tracking work? =
 
@@ -91,7 +91,7 @@ The plugin automatically detects clicks on WhatsApp links and pushes a `wa_click
 == Screenshots ==
 
 1.  Attribution & Consent settings page showing toggle controls.
-2.  Example ClickTrail consent banner on the frontend.
+2.  Example Funnelsheet Journey Tracker consent banner on the frontend.
 
 == Changelog ==
 

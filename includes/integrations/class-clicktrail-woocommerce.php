@@ -45,7 +45,7 @@ class ClickTrail_WooCommerce_Integration {
         }
 
         // Duplicate Prevention: Check if we already tracked this order
-        if ( get_post_meta( $order_id, '_clicktrail_tracking_sent', true ) ) {
+        if ( get_post_meta( $order_id, '_funnelsheet_journey_tracking_sent', true ) ) {
             return;
         }
 
@@ -88,7 +88,7 @@ class ClickTrail_WooCommerce_Integration {
         <?php
 
         // Mark order as tracked to prevent duplicates on refresh
-        update_post_meta( $order_id, '_clicktrail_tracking_sent', 'yes' );
+        update_post_meta( $order_id, '_funnelsheet_journey_tracking_sent', 'yes' );
     }
 
     /**

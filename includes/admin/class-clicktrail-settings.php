@@ -2,7 +2,7 @@
 
 class ClickTrail_Admin {
 
-    private $option_name = 'clicktrail_attribution_settings';
+    private $option_name = 'funnelsheet_journey_settings';
 
     public function init() {
         add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
@@ -12,10 +12,10 @@ class ClickTrail_Admin {
 
     public function add_admin_menu() {
         add_menu_page(
-            'ClickTrail Audit & Settings',
-            'ClickTrail',
+            'Funnelsheet Journey Tracker & Consent',
+            'Funnelsheet Journey',
             'manage_options',
-            'clicktrail',
+            'funnelsheet-journey-tracker',
             array( $this, 'render_settings_page' ),
             'dashicons-chart-area',
             30
@@ -26,18 +26,18 @@ class ClickTrail_Admin {
         register_setting( $this->option_name, $this->option_name, array( $this, 'sanitize_settings' ) );
 
         add_settings_section(
-            'clicktrail_general_section',
+            'funnelsheet_journey_general_section',
             'General Settings',
             null,
-            'clicktrail'
+            'funnelsheet-journey-tracker'
         );
 
         add_settings_field(
             'enable_attribution',
             'Enable Attribution',
             array( $this, 'render_checkbox_field' ),
-            'clicktrail',
-            'clicktrail_general_section',
+            'funnelsheet-journey-tracker',
+            'funnelsheet_journey_general_section',
             array( 'label_for' => 'enable_attribution', 'default' => 1 )
         );
 
@@ -45,24 +45,24 @@ class ClickTrail_Admin {
             'cookie_days',
             'Cookie Duration (Days)',
             array( $this, 'render_number_field' ),
-            'clicktrail',
-            'clicktrail_general_section',
+            'funnelsheet-journey-tracker',
+            'funnelsheet_journey_general_section',
             array( 'label_for' => 'cookie_days', 'default' => 90 )
         );
 
         add_settings_section(
-            'clicktrail_consent_section',
+            'funnelsheet_journey_consent_section',
             'Consent Settings',
             null,
-            'clicktrail'
+            'funnelsheet-journey-tracker'
         );
 
         add_settings_field(
             'enable_consent_banner',
             'Enable Consent Banner',
             array( $this, 'render_checkbox_field' ),
-            'clicktrail',
-            'clicktrail_consent_section',
+            'funnelsheet-journey-tracker',
+            'funnelsheet_journey_consent_section',
             array( 'label_for' => 'enable_consent_banner', 'default' => 1 )
         );
 
@@ -70,8 +70,8 @@ class ClickTrail_Admin {
             'require_consent',
             'Require Consent for Tracking',
             array( $this, 'render_checkbox_field' ),
-            'clicktrail',
-            'clicktrail_consent_section',
+            'funnelsheet-journey-tracker',
+            'funnelsheet_journey_consent_section',
             array( 'label_for' => 'require_consent', 'default' => 1 )
         );
 
@@ -79,8 +79,8 @@ class ClickTrail_Admin {
             'consent_mode_region',
             'Consent Mode Region',
             array( $this, 'render_select_field' ),
-            'clicktrail',
-            'clicktrail_consent_section',
+            'funnelsheet-journey-tracker',
+            'funnelsheet_journey_consent_section',
             array( 
                 'label_for' => 'consent_mode_region', 
                 'default' => 'strict',
@@ -100,7 +100,7 @@ class ClickTrail_Admin {
             <form method="post" action="options.php">
                 <?php
                 settings_fields( $this->option_name );
-                do_settings_sections( 'clicktrail' );
+                do_settings_sections( 'funnelsheet-journey-tracker' );
                 submit_button();
                 ?>
             </form>
@@ -143,12 +143,12 @@ class ClickTrail_Admin {
     }
 
     public function ajax_log_pii_risk() {
-        check_ajax_referer( 'clicktrail_pii_nonce', 'nonce' );
+        check_ajax_referer( 'funnelsheet_journey_pii_nonce', 'nonce' );
 
         $pii_found = filter_input( INPUT_POST, 'pii_found', FILTER_VALIDATE_BOOLEAN );
 
         if ( true === $pii_found ) {
-            update_option( 'clicktrail_pii_risk_detected', true );
+            update_option( 'funnelsheet_journey_pii_risk_detected', true );
             wp_send_json_success();
         }
 
@@ -156,11 +156,11 @@ class ClickTrail_Admin {
     }
 
     public function display_pii_warning() {
-        if ( get_option( 'clicktrail_pii_risk_detected' ) ) {
+        if ( get_option( 'funnelsheet_journey_pii_risk_detected' ) ) {
             ?>
             <div class="notice notice-error is-dismissible">
-                <p><strong><?php esc_html_e( 'ClickTrail Audit detected PII risk on your Thank You page. Your tracking may be deactivated by Google.', 'click-trail-main' ); ?></strong></p>
-                <p><a href="#" class="button button-primary"><?php esc_html_e( 'Fix PII Issues Now', 'click-trail-main' ); ?></a></p>
+                <p><strong><?php esc_html_e( 'Funnelsheet Journey Tracker detected PII risk on your Thank You page. Your tracking may be deactivated by Google.', 'funnelsheet-journey-tracker' ); ?></strong></p>
+                <p><a href="#" class="button button-primary"><?php esc_html_e( 'Fix PII Issues Now', 'funnelsheet-journey-tracker' ); ?></a></p>
             </div>
             <?php
         }
